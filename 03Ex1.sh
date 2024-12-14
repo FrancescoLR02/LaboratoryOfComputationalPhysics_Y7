@@ -3,9 +3,13 @@
 cd $HOME
 
 directory=students
+secondDirectory=GroupStudents
 link="https://www.dropbox.com/scl/fi/bxv17nrbrl83vw6qrkiu9/LCP_22-23_students.csv?rlkey=47fakvatrtif3q3qw4q97p5b7&e=1"
 nameLink="StudentsList.csv"
 counts=0
+letter=0
+numberOfStudents=0
+
 
 
 if [ ! -d "$directory" ]; then
@@ -27,7 +31,37 @@ grep "PoD" "$nameLink" > "PoDStudents.txt" && grep "Physics" "$nameLink" > "Phys
 
 for i in {A..Z}; do
 
-   singleCount=$(grep -c "$i" "$nameLink")
-   echo "$i appears $singleCount times"
+   #tail -n +2 prints from the second line to the last, ignoring the metadata
+   singleCount=$(cut -d "," -f1 "$nameLink" | tail -n +2 |grep -c "^$i")
+
+   if [ $singleCount -gt $counts ]; then
+      counts=$singleCount
+      letter=$i
+
+   fi
+
+   numberOfStudents=$((numberOfStudents + $singleCount))
+
+   echo "The surname with the letter $i appears $singleCount times"
    done
+
+echo "The letter with most counts is: '$letter' and appears $counts' times" 
+
+
+
+if [ ! -d "$secondDirectory" ]; then
+   echo "$secondDirectory does not exist"
+   mkdir $secondDirectory && cd $secondDirectory
+else
+   echo "$secondDirectory already exist"
+   cd $secondDirectory
+fi 
+
+
+
+
+
+
+
+
 
