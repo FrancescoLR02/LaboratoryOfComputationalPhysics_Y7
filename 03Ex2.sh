@@ -19,12 +19,13 @@ grater=0
 lesser=0
 #th=100*sqrt(3/2)
 
-newFilename="file1 file2 file3"  # Space-separated list
 
 
-for i in $newFilename; do
+X=$(cut -d "," -f1 "$filename" | tail -n +5)
+Y=$(cut -d "," -f2 "$filename" | tail -n +5)
+Z=$(cut -d "," -f3 "$filename" | tail -n +5)
 
-   echo $i
-   done
+
+
 
 
