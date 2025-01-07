@@ -32,21 +32,18 @@ grep "PoD" "$nameLink" > "PoDStudents.txt" && grep "Physics" "$nameLink" > "Phys
 for i in {A..Z}; do
 
    #tail -n +2 prints from the second line to the last, ignoring the metadata
+   #! VERY IMPORTANT
    singleCount=$(cut -d "," -f1 "$nameLink" | tail -n +2 |grep -c "^$i")
 
    if [ $singleCount -gt $counts ]; then
       counts=$singleCount
       letter=$i
-
    fi
 
-   numberOfStudents=$((numberOfStudents + $singleCount))
-
    echo "The surname with the letter $i appears $singleCount times"
-   done
+done
 
 echo "The letter with most counts is: '$letter' and appears $counts' times" 
-
 
 
 if [ ! -d "$secondDirectory" ]; then
@@ -56,12 +53,3 @@ else
    echo "$secondDirectory already exist"
    cd $secondDirectory
 fi 
-
-
-
-
-
-
-
-
-
