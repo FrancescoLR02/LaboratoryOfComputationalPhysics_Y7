@@ -27,7 +27,11 @@ fi
 
 cd "$directory"
 
+#Make two file, one containing the students from PoD and the other to P
+
 grep "PoD" "$nameLink" > "PoDStudents.txt" && grep "Physics" "$nameLink" > "PhysicsStudents.txt"
+
+
 
 for i in {A..Z}; do
 
@@ -45,11 +49,17 @@ done
 
 echo "The letter with most counts is: '$letter' and appears $counts' times" 
 
+#E) Assume an obvious numbering of the students in the file (first line is 1, second line is 2, etc.), group students "modulo 18", i.e. 1,19,37,.. 2,20,38,.. etc. and put each group in a separate file  
 
-if [ ! -d "$secondDirectory" ]; then
-   echo "$secondDirectory does not exist"
-   mkdir $secondDirectory && cd $secondDirectory
-else
-   echo "$secondDirectory already exist"
-   cd $secondDirectory
-fi 
+# Get the number of lines in the file
+lines=$(wc -l < "$nameLink")
+
+# Remove the output directory if it exists, then recreate it
+
+# Process the file line by line
+for (( i=1; i<=$lines; ++i )); do
+  mod=$(( (i - 1) % 19 ))
+  
+  # Extract the line and append it to the appropriate file
+  sed "${i}q;d" "$nameLink" >> "StudentsGroups/StudentsGroup_$mod.txt"
+done
