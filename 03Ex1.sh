@@ -32,7 +32,6 @@ cd "$directory"
 grep "PoD" "$nameLink" > "PoDStudents.txt" && grep "Physics" "$nameLink" > "PhysicsStudents.txt"
 
 
-
 for i in {A..Z}; do
 
    #tail -n +2 prints from the second line to the last, ignoring the metadata
