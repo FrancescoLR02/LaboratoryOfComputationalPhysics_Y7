@@ -11,7 +11,7 @@ grep -v "^#" $filename | tr -d "," > $newFilename
 
 IsEven=0
 
-awk '{ for(i=1; i<=NF; i++) if ($i % 2 == 0) IsEven++ } END {print "Even numbers count:", IsEven}' "$filename"
+awk "{ for(i=1; i<=NF; i++) if ($i % 2 == 0) IsEven++ } END {print "Even numbers count:", IsEven}" "$filename"
 
 
 #X, Y, Z in module less or grater than 100*sqrt(3/2)
@@ -22,6 +22,7 @@ counts=$(grep -c -v "^#" $filename)
 
 sqrt=$(echo "scale=4; sqrt(3/2)" | bc)
 variable=100
+echo $sqrt
 th=$(echo "$variable * $sqrt" | bc)
 
 
@@ -29,7 +30,7 @@ X=$(cut -d "," -f1 "$filename" | tail -n +5)
 Y=$(cut -d "," -f2 "$filename" | tail -n +5)
 Z=$(cut -d "," -f3 "$filename" | tail -n +5)
 
-for i in {1..50}; do
+for i in $(seq 1 $counts); do
    X_i=$(echo "$X" | sed -n "${i}p")
    Y_i=$(echo "$Y" | sed -n "${i}p")
    Z_i=$(echo "$Z" | sed -n "${i}p")
