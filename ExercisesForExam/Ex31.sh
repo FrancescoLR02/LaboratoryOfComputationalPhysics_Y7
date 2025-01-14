@@ -12,8 +12,6 @@ counts=0
 
 
 
-
-
 if [ ! -d $folderName ]; then
    echo "Creating the new folder $folderName"
    mkdir $folderName && cd $folderName
