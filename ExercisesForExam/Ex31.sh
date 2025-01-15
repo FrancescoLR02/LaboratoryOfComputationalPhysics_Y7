@@ -3,61 +3,63 @@
 cd $HOME
 
 folderName="students2"
-link="https://www.dropbox.com/scl/fi/bxv17nrbrl83vw6qrkiu9/LCP_22-23_students.csv?rlkey=47fakvatrtif3q3qw4q97p5b7"
 fileName="StudentsList.csv"
-newFolder="StudentsFolder"
+link="https://www.dropbox.com/scl/fi/bxv17nrbrl83vw6qrkiu9/LCP_22-23_students.csv?rlkey=47fakvatrtif3q3qw4q97p5b7&e=1"
 
 letter=0
-counts=0
-
+count=0
 
 
 if [ ! -d $folderName ]; then
-   echo "Creating the new folder $folderName"
+   echo "There is no folder named $folderName"
    mkdir $folderName && cd $folderName
 
-   if [ ! -d $fileName ]; then 
-      echo "Obtaining the file from the source: "
+   if [ ! -d $fileName ]; then   
+      echo "Downloading the file" 
       wget -O "$fileName" "$link"
 
-   else
-      echo "$fileName is already in $folderName"
    fi 
+
+else
+   echo "The folder is already present!" 
 
 fi 
 
+#2)
+
 cd $folderName
 
-grep "PoD" "$fileName" > "PoD_Students.txt" && grep "Physics" "$fileName" > "Physics_Students.txt"
+echo "Dividing students based on the LM course ..." 
+grep "PoD" "$fileName" > "PoD_Students.txt" && grep "Physics" "$fileName" > "Physics_Students.txt" 
 
-
+#3)
 
 for i in {A..Z}; do 
 
-   singleCount=$(cut -d "," -f1 "$fileName" | tail -n +2 | grep -c "^$i")
+   singleCount=$(cut -d "," -f1 "$fileName" | tail -n +2 | grep -c "$i" )
 
-   if [ $singleCount -gt $counts ]; then
+   echo "The letter $i appears $singleCount times in the list"
+
+   if [ $singleCount -gt $count ]; then
+
+      count=$singleCount
       letter=$i
-      counts=$singleCount
-   fi
-
-   echo "The letter $i appears $singleCount times"
+   fi 
 
 done
 
-echo "The most common surname letter is $letter which appears $counts times"
+echo "The most frequent letter is $letter which appears $count times" 
 
+#5)
 
 lines=$(wc -l < "$fileName")
 
-mkdir $newFolder 
+mkdir StudentsGroups
 
-for (( i=0; i<$lines; ++i )); do 
+for (( i=0; i < $lines; ++i )); do
 
-   mod=$(( ($i) % 19 ))
+   mod=$(( ($i) % 19))
 
-   sed "${i}q;d" "$fileName" >> "$newFolder/StudentGroup_$mod.txt"
+   sed "${i}q;d" "$fileName" >> "StudentsGroups/studentGroup_$mod.txt"
 
 done
-
-
