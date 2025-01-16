@@ -7,11 +7,11 @@ evenNumber=0
 #Deleting metadata, sub the comma and saving the file
 grep -v "^#" $filename | tr -d "," > $newFilename
 
-#counting even number:
 
+#counting even number:
 IsEven=0
 
-awk "{ for(i=1; i<=NF; i++) if ($i % 2 == 0) IsEven++ } END {print "Even numbers count:", IsEven}" "$filename"
+awk '{ for(i=1; i<=NF; i++) if ($i % 2 == 0) IsEven++ } END {print IsEven}' $newFilename
 
 
 #X, Y, Z in module less or grater than 100*sqrt(3/2)
@@ -22,7 +22,6 @@ counts=$(grep -c -v "^#" $filename)
 
 sqrt=$(echo "scale=4; sqrt(3/2)" | bc)
 variable=100
-echo $sqrt
 th=$(echo "$variable * $sqrt" | bc)
 
 
@@ -35,7 +34,7 @@ for i in $(seq 1 $counts); do
    Y_i=$(echo "$Y" | sed -n "${i}p")
    Z_i=$(echo "$Z" | sed -n "${i}p")
 
-   Square_i=$(echo " scale=4; sqrt($X_i^2 + $Y_i^2 + $Z_i^2)" | bc)
+   Square_i=$(echo "scale=4; sqrt($X_i^2 + $Y_i^2 + $Z_i^2)" | bc)
 
    #echo "Square_i: $Square_i, th: '$th'"
 
@@ -55,6 +54,6 @@ echo "The total number of value that are less then 100*sqrt(3/2) is: $lesser"
 read -p "Number of copies: " n 
 
 for i in $(seq 1 $n); do
-  awk -v div="$i" '{ for(j=1; j<=NF; j++) $j = $j / div }1' "$filename" > "data_${i}.txt"
+  awk -v div="$i" '{ for(j=1; j<=NF; j++) $j = $j / div }1' "$newFilename" > "data_${i}.txt"
 done
 

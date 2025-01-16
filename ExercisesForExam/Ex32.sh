@@ -39,7 +39,7 @@ for i in $(seq 1 $counts); do
       greater=$((greater + 1))
 
    else
-   smaller=$((smaller + 1))
+      smaller=$((smaller + 1))
 
    fi
    
