@@ -1,65 +1,63 @@
-#!/bin/bash
+#!/bin/bash 
 
 cd $HOME
-
-folderName="students2"
-fileName="StudentsList.csv"
+FolderName="Students2"
+FileName="Students.csv"
 link="https://www.dropbox.com/scl/fi/bxv17nrbrl83vw6qrkiu9/LCP_22-23_students.csv?rlkey=47fakvatrtif3q3qw4q97p5b7&e=1"
 
-letter=0
-count=0
 
+if [ ! -d $FolderName ]; then
 
-if [ ! -d $folderName ]; then
-   echo "There is no folder named $folderName"
-   mkdir $folderName && cd $folderName
+   echo "Creating the folder..."
+   mkdir $FolderName && cd $FolderName
+   if [ ! -d $FileName ]; then
 
-   if [ ! -d $fileName ]; then   
-      echo "Downloading the file" 
-      wget -O "$fileName" "$link"
+      echo "Downloading the file..."
+      wget -O "$FileName" "$link"
 
    fi 
 
 else
-   echo "The folder is already present!" 
+   echo "The folder and the file are already present!"
 
 fi 
 
-#2)
+#Make two file for PoD Students and Physics students
+cd $FolderName
 
-cd $folderName
+grep "PoD" "$FileName" > "PoDStudents.txt" && grep "Physics" "$FileName" > "PhysicsStudents.txt"
 
-echo "Dividing students based on the LM course ..." 
-grep "PoD" "$fileName" > "PoD_Students.txt" && grep "Physics" "$fileName" > "Physics_Students.txt" 
 
-#3)
+counts=0
+letter=0
 
-for i in {A..Z}; do 
+for i in {A..Z}; do
 
-   singleCount=$(cut -d "," -f1 "$fileName" | tail -n +2 | grep -c "$i" )
+   singleCount=$(cut -d "," -f1 "$FileName" | tail -n +2 | grep -c "$i")
 
-   echo "The letter $i appears $singleCount times in the list"
+   echo "The letter $i appears $singleCount times"
 
-   if [ $singleCount -gt $count ]; then
-
-      count=$singleCount
+   if [ $singleCount -gt $counts ]; then
+      counts=$singleCount
       letter=$i
    fi 
 
 done
 
-echo "The most frequent letter is $letter which appears $count times" 
+echo "The most frequent surname letter is $letter which appears $counts times"
 
-#5)
-
-lines=$(wc -l < "$fileName")
+lines=$(wc -l < "$FileName")
 
 mkdir StudentsGroups
 
-for (( i=0; i < $lines; ++i )); do
+for (( i=0; i<$lines; ++i )); do 
 
-   mod=$(( ($i) % 19))
+   mod=$(( ($i) % 18 ))
 
-   sed "${i}q;d" "$fileName" >> "StudentsGroups/studentGroup_$mod.txt"
+   sed "${i}q;d" "$FileName" >> "StudentsGroups/StudentGroup_$mod.txt"
 
-done
+
+
+
+
+
