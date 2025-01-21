@@ -10,8 +10,9 @@ grep -v "^#" "$fileName" | tr -d "," > "$NewFileName"
 
 #How many even numbers:
 
+isEven=0
 
-
+awk '{ for(i=1; i <= NF; ++i) if ($i % 2 == 0) isEven++} END {print isEven}' "$NewFileName"
 
 #Distinguish the entries on the basis:
 
@@ -49,6 +50,14 @@ echo "The total number of value that are less then 100*sqrt(3/2) is: $smaller"
 
 
 #Make n copies
+
+read -p "Number of copies: " n
+
+for i in $(seq 1 $n); do 
+
+   awk -v div="${i}" '{for(j=1; j<=NF; ++j) $j = $j / div }1' $NewFileName > "data_$i.txt"
+
+done 
 
 
 

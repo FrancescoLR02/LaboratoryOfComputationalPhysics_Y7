@@ -56,6 +56,8 @@ for (( i=0; i<$lines; ++i )); do
 
    sed "${i}q;d" "$FileName" >> "StudentsGroups/StudentGroup_$mod.txt"
 
+done
+
 
 
 
